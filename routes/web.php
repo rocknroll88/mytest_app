@@ -24,12 +24,13 @@ Auth::routes([
     'verify' => true
 ]);
 
-Route::middleware(['auth'])->prefix('home')->group(function () {
+
+Route::group(['middleware' => ['role:user', 'auth']], function () {
     Route::get('/user', [App\Http\Controllers\HomeController::class, 'client'])->name('client.index');
     Route::post('/create', [App\Http\Controllers\HomeController::class, 'create'])->name('create.index');
-    Route::get('/proposal/{id}', [App\Http\Controllers\HomeController::class, 'show'])->name('show.index');
 });
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->middleware('auth')->name('home');
-
-
+Route::group(['middleware' => ['role:admin', 'auth']], function () {
+    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+    Route::get('/proposal/{id}', [App\Http\Controllers\HomeController::class, 'show'])->name('show.index');
+});

@@ -6,7 +6,9 @@ use App\Http\Requests\ProposalRequest;
 use App\Mail\ProposalMail;
 use Illuminate\Http\Request;
 use App\Models\Proposal;
+use App\Models\User;
 use Illuminate\Support\Facades\Mail;
+use Spatie\Permission\Models\Role;
 
 class HomeController extends Controller
 {
@@ -27,7 +29,13 @@ class HomeController extends Controller
      */
     public function index()
     {
-
+        // $all_users_with_all_their_roles = User::with('roles')->get();
+        // dump($all_users_with_all_their_roles);
+        //  $user = User::role('admin')->get();
+        //  dump($user);
+        // foreach($user as $u){
+        //     dump($u->name);
+        // }
         $proposals = Proposal::all();
 
         return view('home', ['proposals' => $proposals]);
