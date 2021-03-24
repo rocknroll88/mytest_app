@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="2dcc11bf-9d8a-4568-a731-12005f18317d" name="searchtop">
+        <fileTransfer accessType="SFTP" host="searchtop.ru" port="22" sshConfigId="49f84edd-83ad-4ea0-9975-4998a530081b" sshConfig="root@searchtop.ru:22 password">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

@@ -8,19 +8,24 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Mail;
+use App\Http\Requests\ProposalRequest;
+use App\Mail\ProposalMail;
 
 class SendEmail implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+
+    public $proposal;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($proposal)
     {
-        //
+        $this->proposal = $proposal;
     }
 
     /**
@@ -30,6 +35,6 @@ class SendEmail implements ShouldQueue
      */
     public function handle()
     {
-        //
+        Mail::to('test@test.ru')->send(new ProposalMail($this->proposal));
     }
 }

@@ -9,6 +9,8 @@ use App\Models\Proposal;
 use App\Models\User;
 use Illuminate\Support\Facades\Mail;
 use Spatie\Permission\Models\Role;
+use App\Jobs\SendEmail;
+use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
 {
@@ -56,9 +58,9 @@ class HomeController extends Controller
 
         Proposal::create($proposal);
 
-        // dump($proposal1);
 
-         Mail::to('test@test.ru')->send(new ProposalMail($proposal));
+        dispatch(new SendEmail($proposal));
+
 
         return back()->with('success', 'Ваша заявка успешно отправлена!');
     }
@@ -68,6 +70,17 @@ class HomeController extends Controller
         $proposal = Proposal::find($id);
 
         return view('proposal', ['proposal' => $proposal]);
+
+    }
+
+    public function done($id){
+        $proposal = Proposal::find($id);
+
+        DB::table('proposals')
+            ->where('id', $proposal->id)
+            ->update(['is_done' => 1]);
+
+        return back()->with('success', 'Ваша заявка успешно закрыта!');
 
     }
 
