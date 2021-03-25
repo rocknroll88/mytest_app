@@ -29,6 +29,7 @@ Auth::routes([
 Route::group(['middleware' => ['role:user', 'auth']], function () {
     Route::get('/user', [HomeController::class, 'client'])->name('client.index');
     Route::post('/create', [HomeController::class, 'create'])->name('create.index');
+    Route::get('/card/{id}', [HomeController::class, 'card'])->name('card.index');
 });
 
 Route::group(['middleware' => ['role:admin', 'auth']], function () {

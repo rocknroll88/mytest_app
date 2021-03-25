@@ -10,6 +10,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Mail;
 use Spatie\Permission\Models\Role;
 use App\Jobs\SendEmail;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
@@ -31,13 +32,6 @@ class HomeController extends Controller
      */
     public function index()
     {
-        // $all_users_with_all_their_roles = User::with('roles')->get();
-        // dump($all_users_with_all_their_roles);
-        //  $user = User::role('admin')->get();
-        //  dump($user);
-        // foreach($user as $u){
-        //     dump($u->name);
-        // }
         $proposals = Proposal::all();
 
         return view('home', ['proposals' => $proposals]);
@@ -45,7 +39,11 @@ class HomeController extends Controller
 
 
     public function client(){
-        return view('client.index');
+
+        $id = Auth::user()->id;
+        $all_app = Proposal::where('author_id', $id)->get();
+
+        return view('client.index', compact('all_app'));
     }
 
     public function create(ProposalRequest $request){
@@ -56,11 +54,9 @@ class HomeController extends Controller
            $proposal['file'] = $request->file('file')->store('public/proposal');
        }
 
+        $proposal['author_id'] = Auth::user()->id;
         Proposal::create($proposal);
-
-
         dispatch(new SendEmail($proposal));
-
 
         return back()->with('success', 'Ваша заявка успешно отправлена!');
     }
@@ -81,6 +77,15 @@ class HomeController extends Controller
             ->update(['is_done' => 1]);
 
         return back()->with('success', 'Ваша заявка успешно закрыта!');
+
+    }
+
+
+    public function card($id){
+
+        $proposal = Proposal::find($id);
+
+        return view('client.card', compact('proposal'));
 
     }
 

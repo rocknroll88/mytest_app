@@ -29,6 +29,7 @@ class ProposalRequest extends FormRequest
             'phone' => ['required', 'integer'],
             'email' => ['sometimes', 'email'],
             'textarea' => ['required'],
+            'subject' => ['required'],
             'file' => ['file']
         ];
     }
